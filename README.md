@@ -122,10 +122,11 @@ Let's do a quick activity and get Mongoose and MongoDB running.
     mongoose.connect('mongodb://localhost/todo-app');
   ```
 
-    <details>
-      <summary>What's a connection string?</summary>
-      `mongodb://localhost/todo-app-demo` is a string to connect to a MongoDB database on your local system named `todo-app-demo`. You can name the system whatever you like and it will be created as soon as you save some data to it.
-    </details>
+<details>
+<summary>What's a connection string?</summary>
+The <code>'mongodb://localhost/todo-app-demo'</code> is a database URL.  Here, it's a local database named <code>todo-app-demo</code>. You can name the system whatever you like and it will be created as soon as you save some data to it.
+</details>
+<br>
 
 3. Finally, we need to run the MongodDB service. Generally you will want it open in a separate tab, running in the background.
 
@@ -133,9 +134,9 @@ Let's do a quick activity and get Mongoose and MongoDB running.
     mongod
   ```
 
-    **Note:** If you already have an instance of MongoDB running, you'll get an error at this step. If that's the case, you can move on to the next step, since MongoDB is already running!
+> Note: If you already have an instance of MongoDB running, you'll get an error at this step. If that's the case, you can move on to the next step, since MongoDB is already running!
 
-Running your MongoDB service is no different from running your Express Server!
+Running your MongoDB service is a lot like running your Express Server!
 
 
 ## Todo App Integration
@@ -143,49 +144,65 @@ Once you've finished the above steps, here's how you would set up an Express app
 
 1. We'll need a `Todo` model, which we will set up in a file called `todo.js`....
 
-2. <details>
-  <summary>In your model file (e.g. `todo.js`), create the model **schema**, use it to make a **model**, and export the model so that you can require it in other parts of your app.</summary>
-  ```js
-  var mongoose = require('mongoose'),
+2. In your model file (e.g. `todo.js`), create the model **schema**, use it to make a **model**, and export the model so that you can require it in other parts of your app.
+
+<details><summary>click for code</summary>
+
+```
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-  var TodoSchema = new Schema({
+var TodoSchema = new Schema({
     task: String,
     description: String
-  });
+});
 
-  var Todo = mongoose.model('Todo', TodoSchema);
+var Todo = mongoose.model('Todo', TodoSchema);
 
-  module.exports = Todo;
-  ```
+module.exports = Todo;
+```
+
 </details>
-
-3. <details>
-  <summary>In `models/index.js`, require your model.</summary>
-  ```js
-  // models/index.js
-  // require runs the code from the given file and returns its exports
-  var Todo = require('./todo');
-  ```
-  </details>
-
-3. <details>
-  <summary>Next in `models/index.js`, export the new model.</summary>
-  ```js
-  // models/index.js
-  // require runs the code from the given file and returns its exports
-  var Todo = require('./todo');
-  // NEW LINE:
-  exports.Todo = Todo;
-  ```
-  
-  This will allow us to use the `Todo` model in `server.js`.
-  </details>
+<br>
 
 
-#### Database IDs and data-types
+3. In `models/index.js`, require your model.
 
-Most databases also require that we specify the data type for each attribute.  In mongoose we can use data types from JavaScript, such as String, Number, and even Array. Here's a list of all the [available data-types](http://mongoosejs.com/docs/schematypes.html) in mongoose.
+<details>
+<summary>click for code</summary>
+
+```
+// models/index.js
+// require runs the code from the given file and returns its exports
+var Todo = require('./todo');
+```
+
+</details>
+<br>
+
+
+4. Next in `models/index.js`, export the new model.
+
+<details><summary>click for code</summary>
+
+```
+// models/index.js
+// require runs the code from the given file and returns its exports
+var Todo = require('./todo');
+// NEW LINE:
+exports.Todo = Todo;
+
+```
+
+This will allow us to use the `Todo` model in `server.js`.
+</details>
+<br>
+
+
+
+#### Database IDs and data types
+
+Most databases also require that we specify the data type for each attribute.  In mongoose we can use data types from JavaScript, such as String, Number, and Array. Here's a list of all the [available data-types](http://mongoosejs.com/docs/schematypes.html) in mongoose.
 
 Let's look at this example from the starter-code for these notes. 
 
@@ -206,11 +223,9 @@ var personSchema = new Schema({
 var Person = mongoose.model('Person', personSchema);
 
 module.exports = Person;
-
 ```
 
 > In the above, note how we've assigned **String**, **Number** and even a **Boolean** as the data types for this Schema.
-
 
 Once the model object is exported from its individual file, you'll want to `require` it to use it in another file. 
 
@@ -242,11 +257,11 @@ Here's a slightly more complex example using the structure with a `models/index.
 
 ### Using the Model
 
-Instead of setting up a full server, we'll use a simple script to experiment with some Mongoose methods.  You can see the code for the script in `console.js`. Note that it does `require` the models. It sets up a REPL (read-evaluate-print-loop) that you can use to  interact with the database.  
+Instead of setting up a full server, we'll use a simple script to experiment with some Mongoose methods.  You can see the code for the script in `console.js`. Note that it does `require` the models. It sets up a REPL (read-evaluate-print-loop) that you can use to interact with the database.  
 
 1. Make sure `mongod` is running in a tab of Terminal.
 
-1. In another tab, run `node console.js` to enter the REPL.  
+2. In another tab, run `node console.js` to enter the REPL.  
 
 Now in the REPL that opens, try making a single instance of a person with the code below:
 
@@ -281,7 +296,7 @@ saved new person:  {
 
 ```
 
->Note: Every model instance that we store in the database is assigned an ID. In MongoDB, IDs have a key of `_id` and a value that is a 24-character string.  We can use this ID later to look up a particular record. Later on we'll look at how we can use those IDs can help us form relationships in the database.
+> Note: Every model instance that we store in the database is assigned an ID. In MongoDB, IDs have a key of `_id` and a value that is a 24-character string.  We can use this ID later to look up a particular record. Later on we'll look at how we can use those IDs can help us form relationships in the database.
 
 ## CRUD Operations with Mongoose
 
@@ -302,110 +317,138 @@ Until now, when we wanted to access or manipulate stored data on our server, we 
     <li>
       deleting elements from an array: DELETE /todos/:id
     </li>
+  </ul>
 </details>
+<br>
+
 
 
 Luckily, Mongoose provides methods to access the database data which will help us accomplish these tasks.
 
 #### Get all todos: `.find()`
 
-<details>
-  <summary>We can use <a href="http://mongoosejs.com/docs/api.html#model_Model.find"  target="_blank">.find()</a> to get all documents in the collection.</summary>
-  ```js
-  // get all todos
-  app.get('/api/todos', function(req, res) {
-    // find all todos in db
-    db.Todo.find({}, function(err, allTodos) {
-      res.json({ todos: allTodos });
-    });
-  });
-  ```
+We can use <a href="http://mongoosejs.com/docs/api.html#model_Model.find">.find()</a> to get all documents in the collection.
 
-  **Note:** We can also use `.find()` to get a specific set of documents in the collection (rather than ALL documents) by setting conditions. Read more <a href="http://mongoosejs.com/docs/api.html#model_Model.find"  target="_blank">in the docs</a>.
+<details><summary>click for code</summary>
+
+```
+// get all todos
+app.get('/api/todos', function(req, res) {
+// find all todos in db
+    db.Todo.find({}, function(err, allTodos) {
+        res.json({ todos: allTodos });
+    });
+});
+```
+
+> Note: We can also use `.find()` to get a specific set of documents in the collection (rather than ALL documents) by setting conditions. Read more <a href="http://mongoosejs.com/docs/api.html#model_Model.find"  target="_blank">in the docs</a>.
+
 </details>
+<br>
+
 
 #### Create new todo: `new` and `.save()`
 
-<details>
-  <summary>
-  We've seen the `new` keyword before! It creates new instances of an object. We use it here to create new instances of our `Todo` model. We then call `.save()` to store the new todo in our database.</summary>
-  ```js
-  // create new todo
-  app.post('/api/todos', function(req, res) {
+We've seen the `new` keyword before! It creates new instances of an object. We use it here to create new instances of our `Todo` model. We then call `.save()` to store the new todo in our database.
+
+<details><summary>click for code</summary>
+
+```
+// create new todo
+app.post('/api/todos', function(req, res) {
     // create new todo with form data (`req.body`)
     var newTodo = new db.Todo(req.body);
 
     // save new todo in db
     newTodo.save(function(err, savedTodo) {
-      res.json(savedTodo);
+        res.json(savedTodo);
     });
-  });
-  ```
+});
+```
+  
 </details>
+<br>
+
 
 #### Get one todo: `.findOne()`
 
-<details>
-  <summary>We can use <a href="http://mongoosejs.com/docs/api.html#query_Query-findOne">.findOne()</a> to return the first document in the collection that matches certain criteria. In this case, we're looking for a todo that has a certain `_id`.</summary>
-  ```js
-  // get one todo
-  app.get('/api/todos/:id', function(req, res) {
+We can use <a href="http://mongoosejs.com/docs/api.html#query_Query-findOne">.findOne()</a> to return the first document in the collection that matches certain criteria. In this case, we're looking for a todo that has a certain `_id`.
+
+<details><summary>click for code</summary>
+
+```
+// get one todo
+app.get('/api/todos/:id', function(req, res) {
     // get todo id from url params (`req.params`)
     var todoId = req.params.id;
 
     // find todo in db by id
     db.Todo.findOne({ _id: todoId }, function(err, foundTodo) {
-      res.json(foundTodo);
+        res.json(foundTodo);
     });
-  });
-  ```
+});
+```
 
-  **Note:** The <a href="http://mongoosejs.com/docs/api.html#model_Model.findById" target="_blank">.findById()</a> method will also return a single document matching a specified id field.
+> Note: The <a href="http://mongoosejs.com/docs/api.html#model_Model.findById" target="_blank">.findById()</a> method will also return a single document matching a specified id field.
+
 </details>
+<br>
+
 
 #### Update todo: `.findOne()` and `.save()`
 
-<details>
-  <summary>Similar to the last example, we can use `.findOne()` to find the document with a certain `_id`. After updating the document, we use `.save()` to persist our changes to the database.</summary>
-  ```js
-  // update todo
-  app.put('/api/todos/:id', function(req, res) {
+Similar to the last example, we can use `.findOne()` to find the document with a certain `_id`. After updating the document, we use `.save()` to persist our changes to the database.
+
+<details><summary></summary>
+
+```
+// update todo
+app.put('/api/todos/:id', function(req, res) {
     // get todo id from url params (`req.params`)
     var todoId = req.params.id;
 
     // find todo in db by id
     db.Todo.findOne({ _id: todoId }, function(err, foundTodo) {
-      // update the todos's attributes
-      foundTodo.task = req.body.task;
-      foundTodo.description = req.body.description;
+        // update the todos's attributes
+        foundTodo.task = req.body.task;
+        foundTodo.description = req.body.description;
 
-      // save updated todo in db
-      foundTodo.save(function(err, savedTodo) {
-        res.json(savedTodo);
-      });
+        // save updated todo in db
+        foundTodo.save(function(err, savedTodo) {
+            res.json(savedTodo);
+        });
     });
-  });
-  ```
+});
+```
+  
 </details>
+<br>
+
 
 #### Delete todo: `.findOneAndRemove()`
 
-<details>
-  <summary>The <a href="http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove" target="_blank">.findOneAndRemove()</a> method takes care of finding the document with a certain `_id` and removing it from the database.</summary>
-  ```js
-  // delete todo
-  app.delete('/api/todos/:id', function(req, res) {
+The <a href="http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove" target="_blank">.findOneAndRemove()</a> method takes care of finding the document with a certain `_id` and removing it from the database.
+
+<details><summary>click for code</summary>
+
+```
+// delete todo
+app.delete('/api/todos/:id', function(req, res) {
     // get todo id from url params (`req.params`)
     var todoId = req.params.id;
 
     // find todo in db by id and remove
     db.Todo.findOneAndRemove({ _id: todoId }, function(err, deletedTodo) {
-      res.json(deletedTodo);
+        res.json(deletedTodo);
     });
-  });
-  ```
-  **Note:** Another way to remove the document is by finding the document first (using `.findOne()` or  `.findById()`) and calling <a href="http://mongoosejs.com/docs/api.html#model_Model.remove" target="_blank">`.remove()`</a>.
+});
+```
+
+> Note: Another way to remove the document is by finding the document first (using `.findOne()` or  `.findById()`) and calling <a href="http://mongoosejs.com/docs/api.html#model_Model.remove" target="_blank">`.remove()`</a>.
+
 </details>
+<br>
+
 
 ## Independent Practice
 Practice the skills covered in this workshop with the [Mongoose books training](https://github.com/sf-wdi-labs/mongoose-books-app)
