@@ -399,7 +399,7 @@ app.get('/api/todos/:id', function(req, res) {
 
 Similar to the last example, we can use `.findOne()` to find the document with a certain `_id`. After updating the document, we use `.save()` to persist our changes to the database.
 
-<details><summary></summary>
+<details><summary>click for code</summary>
 
 ```
 // update todo
