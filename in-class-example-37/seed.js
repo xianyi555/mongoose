@@ -1,33 +1,10 @@
 // seed.js
-// create items in database
+// goal: create items in database
 
-// be sure to npm install --save mongoose
-var mongoose = require('mongoose');
-
-// connect to a database
-// the string is a URL for your database
-mongoose.connect('mongodb://localhost/example-app-37')
-
-console.log("it's working!")
-// MongoError: failed to connect to server
-// [localhost:27017] on first connect
-// ^ this error message means, start mongod!
-
-// you are good when you run mongod and see:
-// waiting for connections on port 27017
-
-// STORE DATA!
-// 1. schema for blueprint
-var productSchema = new mongoose.Schema({
-  name: String,
-  isbn: Number,
-  price: Number,
-  comment: String
-  // _id: Stringy thing  (added for us)
-});
-
-// 2. model for everything else
-var Product = mongoose.model('Product', productSchema);
+// bring in models
+var db = require('./models/index.js')
+// db is {  'Product': Product  }
+var Product = db.Product
 
 // 3. use model to create product (advanced: sort)
 var icecreamBeerMachine = new Product({
