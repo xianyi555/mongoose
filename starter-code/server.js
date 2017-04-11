@@ -33,7 +33,10 @@ app.get('/', function homepage(req, res) {
 
 // get all todos
 app.get('/api/todos', function index(req, res) {
-
+  console.log('handling request for GET /api/todos');
+  console.log('- request params:', req.params);
+  console.log('- query string params:', req.query);
+  console.log('- request body:', req.body);
 });
 
 // create new todo
@@ -48,12 +51,12 @@ app.get('/api/todos/:id', function show(req, res) {
 
 // update todo
 app.put('/api/todos/:id', function update(req, res) {
-  
+
 });
 
 // delete todo
 app.delete('/api/todos/:id', function destroy(req, res) {
-  
+
 });
 
 
