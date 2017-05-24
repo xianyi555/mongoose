@@ -37,10 +37,18 @@ var fetcher = (function(request, q) {
 
       try {
         response.json = JSON.parse(response.body);
-        deferred.resolve(response);
-      } catch (e) {
-        deferred.reject(new Error("Response body is the " + typeof(response.body) + " \"" + response.body.toString() + "\" and not valid JSON"))
+      } catch (err) {
+        if ( response.body.match("Error") ) {
+          // Naive check of whether we got an error message.
+          var errMsg = response.body;
+          var cleanMsg = errMsg.split("<br> &nbsp; &nbsp;").join("\n\r");
+          deferred.reject(new Error(cleanMsg));
+        } else {
+          // DO NOTHING
+        }
       }
+
+      deferred.resolve(response);
     });
 
 
@@ -62,7 +70,7 @@ TodoModel.prototype.loadAll = function (){
   fetcher
     .get(base_url + '/api/todos')
     .then(function(response){
-      var all_todos = response.json.todos;
+      var all_todos = response.json.data;
       self.all = all_todos
       self.last = _.last(all_todos)
       self.random = _.sample(all_todos)
@@ -75,6 +83,15 @@ TodoModel.prototype.loadAll = function (){
   return deferred.promise;
 }
 
+
+function ensureJSON(response, done){
+  if( typeof(response.json) !== "object" ){
+    done(new Error("Response body is the " + typeof(response.body) + " \"" + response.body.toString() + "\" and not valid JSON"));
+  } else {
+    expect(response.json).to.be.an("object");
+    done();
+  }
+}
 
 /*
   BEGIN TEST SUITE
@@ -99,22 +116,23 @@ describe('Todos API', function() {
         .fail(done);
     });
 
-    it('should respond with a JSON object', function (done) {
+    it('should respond with a javascript object translated into JSON format', function (done) {
       fetcher
         .get(base_url + '/api/todos')
         .then(function(response) {
-          expect(response.json).to.be.an("object");
-          done();
+          ensureJSON(response, done);
         })
         .fail(done);
     });
 
-    it('should respond with a JSON object containing a list of todos', function (done) {
+
+    it('the JSON object should have one key-value pair. The key should be called "data". The value should be the hardcoded array of todos', function (done) {
+
       fetcher
         .get(base_url + '/api/todos')
         .then(function (response) {
           expect(response.json)
-            .to.have.property("todos")
+            .to.have.property("data")
             .and.be.an("array")
               .and.have.property(0)
               .and.have.all.keys(["task", "description", "_id"]);
@@ -128,7 +146,7 @@ describe('Todos API', function() {
       fetcher
         .get(base_url + '/api/todos')
         .then(function (response) {
-          var first_todo = response.json.todos[0]
+          var first_todo = response.json.data[0]
 
           expect(first_todo)
             .to.have.property("task")
@@ -175,8 +193,7 @@ describe('Todos API', function() {
     });
 
     it('should respond with JSON', function (done) {
-      expect(actual_response.json).to.be.an("object");
-      done();
+      ensureJSON(actual_response, done);
     });
 
     it('should fetch one specific todo by _id', function (done) {
@@ -201,8 +218,8 @@ describe('Todos API', function() {
     var actual_response = {};
     var Todo = new TodoModel;
     var new_todo = {
-      task: 'Create random task name #' + Math.random,
-      description: 'Pick a random number, e.g. ' + Math.random
+      task: 'Create random task name #' + Math.random(),
+      description: 'Pick a random number, e.g. ' + Math.random()
     };
 
     before(function(done){
@@ -223,8 +240,7 @@ describe('Todos API', function() {
     });
 
     it('should respond with JSON', function (done) {
-      expect(actual_response.json).to.be.an("object");
-      done();
+      ensureJSON(actual_response, done);
     });
 
     it('should respond with the new todo object', function (done) {
@@ -293,7 +309,7 @@ describe('Todos API', function() {
       fetcher
         .get(base_url + '/api/todos')
         .then(function(response){
-          var current_todos = response.json.todos;
+          var current_todos = response.json.data;
           expect(current_todos)
             .to.have.length(Todo.all.length - 1)
             .and.not.deep.include(Todo.random);
@@ -310,8 +326,8 @@ describe('Todos API', function() {
     var actual_response = {};
     var Todo = new TodoModel;
     var updated_todo = {
-      task: 'Return order #' + Math.random,
-      description: 'Shipping label #' + Math.random
+      task: 'Return order #' + Math.random(),
+      description: 'Shipping label #' + Math.random()
     };
 
     before(function(done){
@@ -337,8 +353,7 @@ describe('Todos API', function() {
     });
 
     it('should respond with JSON', function (done) {
-      expect(actual_response.json).to.be.an("object");
-      done();
+      ensureJSON(actual_response, done);
     });
 
     it('should update the properities of one specific todo', function (done) {
@@ -366,7 +381,7 @@ describe('Todos API', function() {
     var search_word = _.sample(["surf", "sperlunk", "ski"])
     var updated_todo = {
       task: search_word,
-      description: 'dude... ' + Math.random
+      description: 'dude... ' + Math.random()
     };
 
     before(function(done){
@@ -388,7 +403,7 @@ describe('Todos API', function() {
         .get(base_url + '/api/todos/search?q=' + search_word)
         .then(function(response){
           expect(response.json)
-            .to.have.property("todos")
+            .to.have.property("data")
             .and.be.an("array")
             .and.deep.include(Todo.original_todo);
           done();
