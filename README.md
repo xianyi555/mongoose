@@ -10,13 +10,13 @@ Market: SF
 
 ### Warmup
 
-Fill in the express project file structure organizer (printed sheet).  For each file or directory on the sheet, list:
+Fill in the [express project file structure organizer](https://docs.google.com/document/d/1XKZSGX5qusRB6bXg8lk2Q7NNnA4lJjoIbuz1ZxGfSDE/edit?usp=sharing) (printed sheet).  For each file or directory on the sheet, list:
 - a short summary of the purpose of the file or directory
 - whether the file or directory is most related to the client, the server, or the database
 
 You won't know what some of the database files do yet, but that's okay. Make notes about them as you see them come up today.
 
-[Here's a link to a filled-in sheet where you can add comments if you'd like.](https://docs.google.com/document/d/1HQwKMzNMf6Rn80n-32cTEtDi4wgkxPQV5WdpDw36PhI/edit?usp=sharing)
+[Here's a link to a filled-in sheet where you can add comments if you'd like.](https://docs.google.com/document/d/1f8wADduS5Xq8rlOPmonIY2I1GdWULJA1FrFN0M1kAyE/edit?usp=sharing)
 
 ### Why is this important?
 <!-- framing the "why" in big-picture/real world examples -->
@@ -95,7 +95,7 @@ With the above Schema, we can expect that all of our Address Book entries would 
 var Contact = mongoose.model('Contact', ContactSchema);
 ```
 
-> In mongoose, a schema represents the structure of a particular document, either completely or just a portion of the document. It's a way to express expected properties and values as well as constraints and indexes. A model defines a programming interface for interacting with the database (read, insert, update, etc). So a schema answers "what will the data in this collection look like?" and a model provides functionality like "Are there any records matching this query?" or "Add a new document to the collection".
+> In mongoose, a schema represents the structure of a particular document, either completely or just a portion of the document. It's a way to express expected properties and values as well as constraints and indicies. A model defines a programming interface for interacting with the database (read, insert, update, etc). So a schema answers "what will the data in this collection look like?" and a model provides functionality like "Are there any records matching this query?" or "Add a new document to the collection".
 
 > *[Source: Peter Lyons on StackOverflow](http://stackoverflow.com/questions/22950282/mongoose-schema-vs-model/22950402#22950402)*
 
