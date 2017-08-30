@@ -8,9 +8,7 @@ mongoose.connect('mongodb://localhost/todo-app');
 
 
 // bring in models from separate model files
-var Person = require('./person');
-// var Todo = require('./todo');
+const Todo = require('./todo');
 
 // export the models so they can be used elsewhere
-exports.Person = Person;
-// exports.Todo = Todo;
+exports.Todo = Todo;
