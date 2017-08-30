@@ -22,7 +22,7 @@ app.use(express.static(__dirname + '/public'));
  * HTML Endpoints
  */
 
-app.get('/', function homepage(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
@@ -37,6 +37,18 @@ app.get('/api/todos', function index(req, res) {
   console.log('- request params:', req.params);
   console.log('- query string params:', req.query);
   console.log('- request body:', req.body);
+  res.json({
+    todos: [
+      {
+        task: "Laundry",
+        description: "Wash all the clothes"
+      },
+      {
+        task: "Grocery shopping",
+        description: "I need fresh foods"
+      }
+    ]
+  })
 });
 
 // create new todo
