@@ -37,6 +37,7 @@ app.get('/api/todos', function index(req, res) {
   console.log('- request params:', req.params);
   console.log('- query string params:', req.query);
   console.log('- request body:', req.body);
+  res.json("got the todos index");
 });
 
 // create new todo
