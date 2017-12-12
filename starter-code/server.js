@@ -40,6 +40,14 @@ app.get('/api/todos', function index(req, res) {
 
 // create new todo
 app.post('/api/todos', function create(req, res) {
+  //console.log(req.body);
+  // create todo in database using req.body
+
+  db.Todo.create(req.body, function(err, data) {
+    res.json(data);
+  })
+
+  // send todo back as the response
 
 });
 
