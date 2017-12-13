@@ -40,7 +40,7 @@ app.get('/api/todos', function index(req, res) {
 
 // create new todo
 app.post('/api/todos', function create(req, res) {
-  //console.log(req.body);
+  // console.log(req.body);
   // create todo in database using req.body
 
   db.Todo.create(req.body, function(err, data) {
@@ -54,15 +54,40 @@ app.post('/api/todos', function create(req, res) {
 // get one todo
 app.get('/api/todos/:id', function show(req, res) {
 
+  var todoId = req.params.id;
+  db.Todo.findOne({ _id: todoId }, function(err, foundTodo){
+    res.json(foundTodo);
+  });
+
+
+
 });
 
-// update todo
+//update todo
 app.put('/api/todos/:id', function update(req, res) {
+   var todoId = req.params.id;
+   db.Todo.findOne({ _id: todoId }, function(err, foundTodo){
+    foundTodo.task = req.body.task;
+    foundTodo.description = req.body.description;
+
+    foundTodo.save(function(err, savedTodo){
+      res.json(savedTodo);
+    });
+   });
+
+
+
 
 });
 
 // delete todo
 app.delete('/api/todos/:id', function destroy(req, res) {
+
+  db.Todo.deleteOne({}, function(err, data) {
+    res.json({todos: data});
+  });
+
+
 
 });
 
